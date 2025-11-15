@@ -39,12 +39,24 @@ chatModel = ChatGoogleGenerativeAI(
     google_api_key= "AIzaSyBOTn0WRMxg76paqiob8OnKaWSZvtGcVsA" # Explicitly pass the key
 ) 
 
+# app.py (No changes needed, shown for context)
+
+# ... (imports) ...
+from dotenv import load_dotenv
+from src.prompt import * # <--- This will load your new system_prompt content
+import os
+
+# ... (API key and setup) ...
+
+# ... (embeddings and Pinecone setup) ...
+
 prompt = ChatPromptTemplate.from_messages(
     [
-        ("system", system_prompt),
+        ("system", system_prompt), # <--- Uses the newly formatted prompt
         ("human", "{input}"),
     ]
 )
+
 
 question_answer_chain = create_stuff_documents_chain(chatModel, prompt)
 rag_chain = create_retrieval_chain(retriever, question_answer_chain)
